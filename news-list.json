@@ -1,0 +1,227 @@
+[
+    {
+      "name": "CNN",
+      "url": "https://www.cnn.com",
+      "rss": "http://rss.cnn.com/rss/cnn_topstories.rss"
+    },
+    {
+      "name": "The New York Times",
+      "url": "https://www.nytimes.com",
+      "rss": "https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml"
+    },
+    {
+      "name": "NPR",
+      "url": "https://www.npr.org",
+      "rss": "https://feeds.npr.org/1001/rss.xml"
+    },
+    {
+      "name": "Fox News",
+      "url": "https://www.foxnews.com",
+      "rss": "https://moxie.foxnews.com/google-publisher/latest.xml"
+    },
+    {
+      "name": "BBC News (USA)",
+      "url": "https://www.bbc.com/news",
+      "rss": "https://feeds.bbci.co.uk/news/world/us_and_canada/rss.xml"
+    },
+    {
+      "name": "The Washington Post",
+      "url": "https://www.washingtonpost.com",
+      "rss": "https://feeds.washingtonpost.com/rss/politics"
+    },
+    {
+      "name": "Associated Press (AP News)",
+      "url": "https://apnews.com",
+      "rss": "https://rsshub.app/apnews/topics/ap-top-news"
+    },
+    {
+      "name": "The Wall Street Journal",
+      "url": "https://www.wsj.com",
+      "rss": "https://feeds.content.dowjones.io/public/rss/RSSUSnews"
+    },
+    {
+      "name": "NBC News",
+      "url": "https://www.nbcnews.com",
+      "rss": "https://www.nbcnews.com/id/3032091/device/rss/rss.xml"
+    },
+    {
+      "name": "abcnews.go",
+      "url": "https://abcnews.go.com",
+      "rss": "https://feeds.abcnews.com/abcnews/topstories"
+    },
+    {
+      "name": "cbsnews",
+      "url": "https://www.cbsnews.com",
+      "rss": "https://www.cbsnews.com/latest/rss/main"
+    },
+    {
+      "name": "huffpost",
+      "url": "https://www.huffpost.com",
+      "rss": "https://chaski.huffpost.com/us/auto/vertical/us-news"
+    },
+    {
+      "name": "politico",
+      "url": "https://www.politico.com",
+      "rss": "https://rss.politico.com/politics-news.xml"
+    },
+    {
+      "name": "news.yahoo",
+      "url": "https://news.yahoo.com",
+      "rss": "https://www.yahoo.com/news/rss"
+    },
+    {
+      "name": "latimes",
+      "url": "https://www.latimes.com",
+      "rss": "https://www.latimes.com/local/rss2.0.xml"
+    },
+    {
+      "name": "bostonherald",
+      "url": "https://www.bostonherald.com",
+      "rss": "https://www.bostonherald.com/feed/"
+    },
+    {
+      "name": "theintercept",
+      "url": "https://theintercept.com",
+      "rss": "https://theintercept.com/feed/?lang=en"
+    },
+    {
+      "name": "newsweek",
+      "url": "https://newsweek.com",
+      "rss": "https://www.newsweek.com/rss"
+    },
+    {
+      "name": "salon",
+      "url": "https://www.salon.com/",
+      "rss": "https://www.salon.com/feed"
+    },
+    {
+      "name": "chicago.suntimes",
+      "url": "https://chicago.suntimes.com",
+      "rss": "https://chicago.suntimes.com/rss/index.xml"
+    },
+    {
+      "name": "abc13",
+      "url": "https://abc13.com",
+      "rss": "https://abc13.com/feed/"
+    },
+    {
+      "name": "nbcchicago",
+      "url": "https://nbcchicago.com",
+      "rss": "https://www.nbcchicago.com/?rss=y"
+    },
+    {
+      "name": "autonews",
+      "url": "https://autonews.com",
+      "rss": "https://www.autonews.com/arc/outboundfeeds/sitemap-news/?topics=48856"
+    },
+    {
+      "name": "abc7news",
+      "url": "https://abc7news.com",
+      "rss": "https://abc7news.com/feed/"
+    },
+    {
+      "name": "nbcwashington",
+      "url": "https://nbcwashington.com",
+      "rss": "https://www.nbcwashington.com/?rss=y"
+    },
+    {
+      "name": "seattletimes",
+      "url": "https://www.seattletimes.com",
+      "rss": "https://www.seattletimes.com/feed/"
+    },
+    {
+      "name": "dailyherald",
+      "url": "https://dailyherald.com",
+      "rss": "https://www.dailyherald.com/rssfeed/top-stories/"
+    },
+    {
+      "name": "vox",
+      "url": "https://vox.com",
+      "rss": "https://www.vox.com/rss/index.xml"
+    },
+    {
+      "name": "breitbart",
+      "url": "https://breitbart.com",
+      "rss": "https://feeds.feedburner.com/breitbart"
+    },
+    {
+      "name": "sfstandard",
+      "url": "https://sfstandard.com/",
+      "rss": "https://sfstandard.com/feed"
+    },
+    {
+      "name": "denverpost",
+      "url": "https://www.denverpost.com",
+      "rss": "https://www.denverpost.com/feed/"
+    },
+    {
+      "name": "washingtontimes",
+      "url": "https://washingtontimes.com",
+      "rss": "https://www.washingtontimes.com/rss/headlines/news/"
+    },
+    {
+      "name": "nypost",
+      "url": "https://nypost.com",
+      "rss": "https://nypost.com/feed/"
+    },
+    {
+      "name": "observer",
+      "url": "https://observer.com",
+      "rss": "https://observer.com/feed/"
+    },
+    {
+      "name": "mercurynews",
+      "url": "https://mercurynews.com",
+      "rss": "https://www.mercurynews.com/feed/"
+    },
+    {
+      "name": "gothamist",
+      "url": "https://gothamist.com",
+      "rss": "https://gothamist.com/feed"
+    },
+    {
+      "name": "boston",
+      "url": "https://boston.com",
+      "rss": "https://www.boston.com/feed/"
+    },
+    {
+      "name": "ktla",
+      "url": "https://ktla.com",
+      "rss": "https://ktla.com/feed/"
+    },
+    {
+      "name": "kxan",
+      "url": "https://kxan.com",
+      "rss": "https://www.kxan.com/feed/"
+    },
+    {
+      "name": "kdvr",
+      "url": "https://kdvr.com",
+      "rss": "https://kdvr.com/feed/"
+    },
+    {
+      "name": "kron4",
+      "url": "https://kron4.com",
+      "rss": "https://www.kron4.com/feed/"
+    },
+    {
+      "name": "phillyvoice",
+      "url": "https://phillyvoice.com",
+      "rss": "https://www.phillyvoice.com/feed/"
+    },
+    {
+      "name": "fox2now",
+      "url": "https://fox2now.com/",
+      "rss": "https://fox2now.com/feed/"
+    },
+    {
+      "name": "fox5sandiego",
+      "url": "https://fox5sandiego.com",
+      "rss": "https://fox5sandiego.com/feed/"
+    },
+    {
+      "name": "chicagoreader",
+      "url": "https://chicagoreader.com",
+      "rss": "https://chicagoreader.com/feed/"
+    }
+  ]

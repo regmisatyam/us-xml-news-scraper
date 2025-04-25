@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>US News</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/static/app.css">
+</head>
+
+<body class="bg-gray-100">
+    <div id="news-container" class="container mx-auto p-4">
+        <h1 class="text-3xl font-bold mb-4 text-center">News Media</h1>
+        <div id="news-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 "></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const response = await fetch('/news-list');
+            const newsList = await response.json();
+            const newsContainer = document.getElementById('news-list');
+            const panel = document.createElement('div');
+            panel.className = 'panel';
+            document.body.appendChild(panel);
+
+            // Create close button
+            const closeButton = document.createElement('button');
+            closeButton.className = 'close-btn';
+            closeButton.textContent = 'X';
+            closeButton.addEventListener('click', () => {
+                panel.classList.remove('open');
+            });
+            panel.appendChild(closeButton);
+
+            newsList.forEach(async news => {
+                try {
+                    let faviconUrl = '/static/image.png'; 
+                    try {
+                        const imgResponse = await fetch(`https://fifu.vercel.app/?url=${news.url}`);
+                        const imgData = await imgResponse.json();
+                        faviconUrl = imgData.favicon;
+                    } catch (imgError) {
+                        console.warn("Failed to fetch favicon, using default:", imgError);
+                    }
+
+                    const newsItem = document.createElement('div');
+                    newsItem.className = 'p-4 border rounded-2xl shadow bg-white';
+                    newsItem.innerHTML = `
+                        <div class="flex items-center">
+                            <img src="${faviconUrl}" alt="News Media Favicon" class="w-8 h-8 mr-2 rounded-full">
+                            <h2 class="text-xl font-semibold uppercase mb-2">${news.name}</h2>
+                        </div>
+                        <p class="text-gray-700 mb-2"><a href="#" class="text-blue-500 hover:underline">${news.url}</a></p>
+                    `;
+                    newsItem.querySelector('a').addEventListener('click', async (e) => {
+                        e.preventDefault();
+                        panel.innerHTML = '<p class="text-center">Loading...</p>';
+                        panel.appendChild(closeButton); // Ensure close button is visible
+                        panel.classList.add('open');
+
+                        try {
+                            const newsResponse = await fetch(`/news?${news.rss}`);
+                            const newsData = await newsResponse.json();
+                            panel.innerHTML = `
+                                <div class="p-4 max-w-2xl m-auto">
+                                    <h2 class="text-2xl font-bold mb-4 uppercase">${news.name} News</h2>
+                                    ${newsData.news.map(item => `
+                                        <div class="mb-4 p-4 border rounded shadow bg-gray-50">
+                                            ${item.image && item.image.trim() ? `<img src="${item.image}" class="rounded-2xl w-full h-68 object-cover" alt="News Image" />` : ''}
+                                            <h3 class="text-lg font-semibold">${item.title}</h3>
+                                            <p class="text-gray-600">${item.content}</p>
+                                            <a href="${item.link}" class="text-blue-500 hover:underline">Read more</a>
+                                            <p class="text-sm text-gray-500">
+                                                ${item.pubDate && item.pubDate.trim() ? `${new Date(item.pubDate).toLocaleString()}` : ""}
+                                                </p>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            `;
+                            panel.appendChild(closeButton); // Add close button after content
+                        } catch (error) {
+                            console.error("Error fetching news content:", error);
+                            panel.innerHTML = `<p class="text-red-500 p-4">Failed to load news content.</p>`;
+                            panel.appendChild(closeButton); // Add close button after error message
+                        }
+                    });
+                    newsContainer.appendChild(newsItem);
+                } catch (error) {
+                    console.error("Error fetching image or processing news item:", error);
+                }
+            });
+
+            // Close panel when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!panel.contains(e.target) && !e.target.closest('.p-4')) {
+                    panel.classList.remove('open');
+                }
+            });
+        });
+
+    </script>
+</body>
+
+</html>
