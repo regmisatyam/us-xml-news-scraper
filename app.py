@@ -11,6 +11,10 @@ def index():
 def privacyPage():
     return render_template('privacy.html')
 
+@app.route('/undefined')
+def undefined():
+    return "News not found!"
+
 @app.route('/news-list', methods=['GET'])
 def get_news_list():
     try:

@@ -7,98 +7,461 @@
     <title>US News</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="/static/app.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js" type="module"></script>
+    <script src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js" nomodule></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        },
+                    },
+                },
+            },
+        }
+    </script>
+    <!-- Initial theme check before page load to prevent flash -->
+    <script>
+        // Check for saved theme preference or prefer-color-scheme
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+            document.documentElement.classList.add('dark-mode');
+        }
+    </script>
 </head>
 
-<body class="bg-gray-100">
-    <div id="news-container" class="container mx-auto p-4">
-        <h1 class="text-3xl font-bold mb-4 text-center">News Media</h1>
-        <div id="news-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 "></div>
+<body class="bg-gray-50 font-sans text-gray-800">
+    <nav class="bg-white shadow-sm sticky top-0 z-10 transition-colors">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center">
+                    <ion-icon name="globe-outline" class="text-2xl text-primary-600 mr-2"></ion-icon>
+                    <h1 class="text-2xl font-bold text-primary-600">US News</h1>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <div class="relative">
+                        <input id="search-input" type="text" placeholder="Search sources..." class="py-1.5 px-3 pr-8 w-full sm:w-40 md:w-56 rounded-lg border border-gray-200 focus:outline-none focus:border-primary-500 transition shadow-sm text-sm">
+                        <ion-icon name="search-outline" class="absolute right-2.5 top-1/2 transform -translate-y-1/2 text-gray-400"></ion-icon>
+                    </div>
+                    <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-100 transition-colors" aria-label="Toggle theme">
+                        <ion-icon name="moon-outline" class="text-xl"></ion-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="bg-primary-50 py-12 border-b border-primary-100 mb-8">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto text-center">
+                <h2 class="text-4xl font-bold mb-3 text-primary-800">Your Daily News Sources</h2>
+                <p class="text-lg text-primary-700">Access all your favorite news sources in one place.</p>
+            </div>
+        </div>
     </div>
+
+    <div class="container mx-auto px-4 pb-12">
+        <div id="category-filters" class="flex flex-wrap justify-center mb-6 gap-2">
+            <button class="filter-btn active px-4 py-1.5 rounded-full text-sm font-medium bg-primary-500 text-white" data-category="all">All Sources</button>
+            <button class="filter-btn px-4 py-1.5 rounded-full text-sm font-medium bg-gray-100 text-gray-700 hover:bg-gray-200" data-category="news">News</button>
+            <button class="filter-btn px-4 py-1.5 rounded-full text-sm font-medium bg-gray-100 text-gray-700 hover:bg-gray-200" data-category="tech">Technology</button>
+            <button class="filter-btn px-4 py-1.5 rounded-full text-sm font-medium bg-gray-100 text-gray-700 hover:bg-gray-200" data-category="finance">Finance</button>
+            <button class="filter-btn px-4 py-1.5 rounded-full text-sm font-medium bg-gray-100 text-gray-700 hover:bg-gray-200" data-category="sports">Sports</button>
+        </div>
+        
+        <div id="news-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
+        
+        <div id="no-results" class="hidden text-center py-12">
+            <ion-icon name="search-outline" class="text-5xl text-gray-400 mb-4"></ion-icon>
+            <p class="text-xl font-medium text-gray-800">No sources found</p>
+            <p class="text-gray-500 mt-2">Try a different search term</p>
+        </div>
+    </div>
+
+    <footer class="bg-white pt-12 pb-6 border-t">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <ion-icon name="globe-outline" class="text-2xl text-primary-600 mr-2"></ion-icon>
+                        <h3 class="text-xl font-bold text-primary-600">US News</h3>
+                    </div>
+                    <p class="text-gray-500 mb-4">Stay informed with the latest news from your favorite sources, all in one place.</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-gray-800 mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-500 hover:text-primary-600 transition-colors">Home</a></li>
+                        <li><a href="#" class="text-gray-500 hover:text-primary-600 transition-colors">Categories</a></li>
+                        <li><a href="#" class="text-gray-500 hover:text-primary-600 transition-colors">About</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-gray-800 mb-4">Connect</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-primary-600 transition-colors">
+                            <ion-icon name="logo-twitter" class="text-xl"></ion-icon>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-primary-600 transition-colors">
+                            <ion-icon name="logo-facebook" class="text-xl"></ion-icon>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-primary-600 transition-colors">
+                            <ion-icon name="logo-instagram" class="text-xl"></ion-icon>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-200 pt-6 text-center text-gray-500">
+                <p>© 2023 US News. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
-            const response = await fetch('/news-list');
-            const newsList = await response.json();
-            const newsContainer = document.getElementById('news-list');
-            const panel = document.createElement('div');
-            panel.className = 'panel';
-            document.body.appendChild(panel);
-
-            // Create close button
-            const closeButton = document.createElement('button');
-            closeButton.className = 'close-btn';
-            closeButton.textContent = 'X';
-            closeButton.addEventListener('click', () => {
-                panel.classList.remove('open');
+            // Theme toggle functionality with localStorage
+            const themeToggle = document.getElementById('theme-toggle');
+            const toggleIcon = themeToggle.querySelector('ion-icon');
+            
+            // Check if dark mode is already active
+            if (document.documentElement.classList.contains('dark-mode')) {
+                document.body.classList.add('dark-mode');
+                toggleIcon.setAttribute('name', 'sunny-outline');
+            }
+            
+            themeToggle.addEventListener('click', () => {
+                document.body.classList.toggle('dark-mode');
+                document.documentElement.classList.toggle('dark-mode');
+                
+                if (document.body.classList.contains('dark-mode')) {
+                    toggleIcon.setAttribute('name', 'sunny-outline');
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    toggleIcon.setAttribute('name', 'moon-outline');
+                    localStorage.setItem('theme', 'light');
+                }
             });
-            panel.appendChild(closeButton);
 
-            newsList.forEach(async news => {
-                try {
-                    let faviconUrl = '/static/image.png'; 
-                    try {
-                        const imgResponse = await fetch(`https://fifu.vercel.app/?url=${news.url}`);
-                        const imgData = await imgResponse.json();
-                        faviconUrl = imgData.favicon;
-                    } catch (imgError) {
-                        console.warn("Failed to fetch favicon, using default:", imgError);
+            // Search functionality
+            const searchInput = document.getElementById('search-input');
+            let newsItems = [];
+            
+            searchInput.addEventListener('input', filterNewsSources);
+            
+            function filterNewsSources() {
+                const searchTerm = searchInput.value.toLowerCase();
+                const activeCategory = document.querySelector('.filter-btn.active').dataset.category;
+                
+                let visibleItemsCount = 0;
+                
+                newsItems.forEach(item => {
+                    const element = item.element;
+                    const name = item.name.toLowerCase();
+                    const category = item.category || 'news';
+                    
+                    const matchesSearch = name.includes(searchTerm);
+                    const matchesCategory = activeCategory === 'all' || category === activeCategory;
+                    
+                    if (matchesSearch && matchesCategory) {
+                        element.classList.remove('hidden');
+                        visibleItemsCount++;
+                    } else {
+                        element.classList.add('hidden');
                     }
+                });
+                
+                // Show "no results" message if needed
+                const noResults = document.getElementById('no-results');
+                if (visibleItemsCount === 0) {
+                    noResults.classList.remove('hidden');
+                } else {
+                    noResults.classList.add('hidden');
+                }
+            }
+            
+            // Category filter functionality
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Remove active class from all buttons
+                    filterButtons.forEach(btn => {
+                        btn.classList.remove('active', 'bg-primary-500', 'text-white');
+                        btn.classList.add('bg-gray-100', 'text-gray-700');
+                    });
+                    
+                    // Add active class to clicked button
+                    button.classList.add('active', 'bg-primary-500', 'text-white');
+                    button.classList.remove('bg-gray-100', 'text-gray-700');
+                    
+                    filterNewsSources();
+                });
+            });
+            
+            // Fetch news sources
+            try {
+                const response = await fetch('/news-list');
+                const newsList = await response.json();
+                const newsContainer = document.getElementById('news-list');
+                
+                // Create news panel
+                const panel = document.createElement('div');
+                panel.className = 'panel';
+                document.body.appendChild(panel);
 
-                    const newsItem = document.createElement('div');
-                    newsItem.className = 'p-4 border rounded-2xl shadow bg-white';
-                    newsItem.innerHTML = `
-                        <div class="flex items-center">
-                            <img src="${faviconUrl}" alt="News Media Favicon" class="w-8 h-8 mr-2 rounded-full">
-                            <h2 class="text-xl font-semibold uppercase mb-2">${news.name}</h2>
-                        </div>
-                        <p class="text-gray-700 mb-2"><a href="#" class="text-blue-500 hover:underline">${news.url}</a></p>
-                    `;
-                    newsItem.querySelector('a').addEventListener('click', async (e) => {
-                        e.preventDefault();
-                        panel.innerHTML = '<p class="text-center">Loading...</p>';
-                        panel.appendChild(closeButton); // Ensure close button is visible
-                        panel.classList.add('open');
+                // Create close button for panel
+                const closeButton = document.createElement('button');
+                closeButton.className = 'close-btn';
+                closeButton.innerHTML = '<ion-icon name="close-outline" class="text-2xl"></ion-icon>';
+                closeButton.addEventListener('click', () => {
+                    panel.classList.remove('open');
+                    document.body.classList.remove('overflow-hidden');
+                });
+                panel.appendChild(closeButton);
 
-                        try {
-                            const newsResponse = await fetch(`/news?${news.rss}`);
-                            const newsData = await newsResponse.json();
-                            panel.innerHTML = `
-                                <div class="p-4 max-w-2xl m-auto">
-                                    <h2 class="text-2xl font-bold mb-4 uppercase">${news.name} News</h2>
-                                    ${newsData.news.map(item => `
-                                        <div class="mb-4 p-4 border rounded shadow bg-gray-50">
-                                            ${item.image && item.image.trim() ? `<img src="${item.image}" class="rounded-2xl w-full h-68 object-cover" alt="News Image" />` : ''}
-                                            <h3 class="text-lg font-semibold">${item.title}</h3>
-                                            <p class="text-gray-600">${item.content}</p>
-                                            <a href="${item.link}" class="text-blue-500 hover:underline">Read more</a>
-                                            <p class="text-sm text-gray-500">
-                                                ${item.pubDate && item.pubDate.trim() ? `${new Date(item.pubDate).toLocaleString()}` : ""}
-                                                </p>
-                                        </div>
-                                    `).join('')}
-                                </div>
-                            `;
-                            panel.appendChild(closeButton); // Add close button after content
-                        } catch (error) {
-                            console.error("Error fetching news content:", error);
-                            panel.innerHTML = `<p class="text-red-500 p-4">Failed to load news content.</p>`;
-                            panel.appendChild(closeButton); // Add close button after error message
+                // Load animation for news items
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            setTimeout(() => {
+                                entry.target.classList.add('show');
+                            }, entry.target.dataset.delay);
+                            observer.unobserve(entry.target);
                         }
                     });
-                    newsContainer.appendChild(newsItem);
-                } catch (error) {
-                    console.error("Error fetching image or processing news item:", error);
-                }
-            });
+                }, {
+                    threshold: 0.1
+                });
 
-            // Close panel when clicking outside
-            document.addEventListener('click', (e) => {
-                if (!panel.contains(e.target) && !e.target.closest('.p-4')) {
-                    panel.classList.remove('open');
+                // Random categories for demo
+                const categories = ['news', 'tech', 'finance', 'sports'];
+
+                newsList.forEach(async (news, index) => {
+                    try {
+                        let faviconUrl = '/static/image.png'; 
+                        try {
+                            const imgResponse = await fetch(`https://fifu.vercel.app/?url=${news.url}`);
+                            const imgData = await imgResponse.json();
+                            faviconUrl = imgData.favicon;
+                        } catch (imgError) {
+                            console.warn("Failed to fetch favicon, using default:", imgError);
+                        }
+
+                        // Assign random category for demo
+                        const randomCategory = categories[Math.floor(Math.random() * categories.length)];
+                        
+                        const newsItem = document.createElement('div');
+                        newsItem.className = 'news-item transform transition duration-300 hover:scale-102 bg-white rounded-xl shadow-sm hover:shadow-md overflow-hidden';
+                        newsItem.dataset.delay = `${index * 50}ms`;
+                        newsItem.dataset.category = randomCategory;
+                        
+                        newsItem.innerHTML = `
+                            <div class="relative overflow-hidden h-32 bg-gradient-to-r from-primary-400 to-primary-600 flex items-center justify-center">
+                                <div class="absolute inset-0 opacity-20 bg-pattern"></div>
+                                <img src="${faviconUrl}" alt="${news.name}" class="w-16 h-16 object-contain bg-white p-2 rounded-full shadow-md">
+                            </div>
+                            <div class="p-5">
+                                <div class="flex items-center justify-between mb-3">
+                                    <h2 class="text-lg font-semibold">${news.name}</h2>
+                                    <span class="px-2 py-1 text-xs font-medium rounded-full ${getCategoryClass(randomCategory)}">${randomCategory}</span>
+                                </div>
+                                <p class="text-gray-500 text-sm mb-4 truncate">${news.url}</p>
+                                <button class="view-news-btn w-full py-2.5 px-4 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition duration-300 flex items-center justify-center transform hover:-translate-y-0.5">
+                                    <span>View Latest News</span>
+                                    <ion-icon name="arrow-forward-outline" class="ml-2"></ion-icon>
+                                </button>
+                            </div>
+                        `;
+                        
+                        // Store reference for search filtering
+                        newsItems.push({
+                            element: newsItem,
+                            name: news.name,
+                            category: randomCategory
+                        });
+                        
+                        observer.observe(newsItem);
+                        
+                        newsItem.querySelector('.view-news-btn').addEventListener('click', async () => {
+                            panel.innerHTML = `
+                                <div class="flex items-center justify-between p-4 border-b sticky top-0 bg-white z-10">
+                                    <div class="flex items-center">
+                                        <img src="${faviconUrl}" alt="${news.name}" class="w-6 h-6 mr-3">
+                                        <h2 class="text-xl font-bold">${news.name}</h2>
+                                    </div>
+                                    <button class="close-btn">
+                                        <ion-icon name="close-outline" class="text-2xl"></ion-icon>
+                                    </button>
+                                </div>
+                                <div class="p-4 flex justify-center items-center h-full">
+                                    <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500"></div>
+                                </div>
+                            `;
+                            
+                            panel.classList.add('open');
+                            document.body.classList.add('overflow-hidden');
+                            
+                            // Reattach close button event
+                            panel.querySelector('.close-btn').addEventListener('click', () => {
+                                panel.classList.remove('open');
+                                document.body.classList.remove('overflow-hidden');
+                            });
+
+                            try {
+                                const newsResponse = await fetch(`/news?${news.rss}`);
+                                const newsData = await newsResponse.json();
+                                
+                                const content = document.createElement('div');
+                                content.className = 'news-content py-4';
+                                content.innerHTML = `
+                                    <div class="px-4 max-w-3xl mx-auto">
+                                        ${newsData.news.map((item, idx) => `
+                                            <div class="news-article mb-8 bg-white rounded-xl overflow-hidden shadow-sm animate-fade-in" style="animation-delay: ${idx * 100}ms">
+                                                ${item.image && item.image.trim() ? 
+                                                    `<div class="relative h-48 md:h-64 overflow-hidden">
+                                                        <img src="${item.image}" class="w-full h-full object-cover" alt="News Image" />
+                                                     </div>` : ''}
+                                                <div class="p-5">
+                                                    <h3 class="text-xl font-semibold mb-3">${item.title}</h3>
+                                                    <p class="text-gray-600 mb-4">${item.content}</p>
+                                                    <div class="flex justify-between items-center">
+                                                        <a href="${item.link}" target="_blank" class="text-primary-500 hover:text-primary-700 font-medium flex items-center group">
+                                                            Read full article 
+                                                            <ion-icon name="open-outline" class="ml-1 transform transition-transform group-hover:translate-x-1"></ion-icon>
+                                                        </a>
+                                                        ${item.pubDate && item.pubDate.trim() ? 
+                                                            `<p class="text-sm text-gray-400">${formatDate(item.pubDate)}</p>` : ''}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                `;
+                                
+                                panel.innerHTML = '';
+                                
+                                const header = document.createElement('div');
+                                header.className = 'flex items-center justify-between p-4 border-b sticky top-0 bg-white z-10';
+                                header.innerHTML = `
+                                    <div class="flex items-center">
+                                        <img src="${faviconUrl}" alt="${news.name}" class="w-6 h-6 mr-3">
+                                        <h2 class="text-xl font-bold">${news.name}</h2>
+                                    </div>
+                                `;
+                                
+                                const closeBtn = document.createElement('button');
+                                closeBtn.className = 'close-btn';
+                                closeBtn.innerHTML = '<ion-icon name="close-outline" class="text-2xl"></ion-icon>';
+                                closeBtn.addEventListener('click', () => {
+                                    panel.classList.remove('open');
+                                    document.body.classList.remove('overflow-hidden');
+                                });
+                                
+                                header.appendChild(closeBtn);
+                                panel.appendChild(header);
+                                panel.appendChild(content);
+                                
+                            } catch (error) {
+                                console.error("Error fetching news content:", error);
+                                panel.innerHTML = `
+                                    <div class="flex items-center justify-between p-4 border-b sticky top-0 bg-white z-10">
+                                        <div class="flex items-center">
+                                            <img src="${faviconUrl}" alt="${news.name}" class="w-6 h-6 mr-3">
+                                            <h2 class="text-xl font-bold">${news.name}</h2>
+                                        </div>
+                                        <button class="close-btn">
+                                            <ion-icon name="close-outline" class="text-2xl"></ion-icon>
+                                        </button>
+                                    </div>
+                                    <div class="p-8 text-center">
+                                        <ion-icon name="alert-circle-outline" class="text-5xl text-red-500 mb-4"></ion-icon>
+                                        <p class="text-xl font-medium text-gray-800">Failed to load news content</p>
+                                        <p class="text-gray-500 mt-2">Please try again later</p>
+                                    </div>
+                                `;
+                                
+                                panel.querySelector('.close-btn').addEventListener('click', () => {
+                                    panel.classList.remove('open');
+                                    document.body.classList.remove('overflow-hidden');
+                                });
+                            }
+                        });
+                        
+                        newsContainer.appendChild(newsItem);
+                    } catch (error) {
+                        console.error("Error fetching image or processing news item:", error);
+                    }
+                });
+
+                // Close panel when clicking outside
+                document.addEventListener('click', (e) => {
+                    if (panel.classList.contains('open') && !panel.contains(e.target) && !e.target.closest('.news-item')) {
+                        panel.classList.remove('open');
+                        document.body.classList.remove('overflow-hidden');
+                    }
+                });
+            } catch (error) {
+                console.error("Failed to fetch news list:", error);
+                document.getElementById('news-list').innerHTML = `
+                    <div class="col-span-full text-center py-12">
+                        <ion-icon name="cloud-offline-outline" class="text-5xl text-gray-400 mb-4"></ion-icon>
+                        <p class="text-xl font-medium text-gray-800">Failed to load news sources</p>
+                        <p class="text-gray-500 mt-2">Please check your connection and try again</p>
+                        <button class="mt-4 px-4 py-2 bg-primary-500 text-white rounded-lg" onclick="location.reload()">
+                            Retry
+                        </button>
+                    </div>
+                `;
+            }
+            
+            // Helper functions
+            function getCategoryClass(category) {
+                switch(category) {
+                    case 'tech':
+                        return 'bg-purple-100 text-purple-800';
+                    case 'finance':
+                        return 'bg-green-100 text-green-800';
+                    case 'sports':
+                        return 'bg-orange-100 text-orange-800';
+                    default:
+                        return 'bg-blue-100 text-blue-800';
                 }
-            });
+            }
+            
+            function formatDate(dateString) {
+                const date = new Date(dateString);
+                const now = new Date();
+                const diffTime = Math.abs(now - date);
+                const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+                
+                if (diffDays === 0) {
+                    return 'Today, ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                } else if (diffDays === 1) {
+                    return 'Yesterday, ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                } else if (diffDays < 7) {
+                    return diffDays + ' days ago';
+                } else {
+                    return date.toLocaleDateString([], { day: 'numeric', month: 'short', year: 'numeric' });
+                }
+            }
         });
-
     </script>
 </body>
 
